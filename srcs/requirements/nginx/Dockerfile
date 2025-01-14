@@ -1,5 +1,43 @@
 FROM debian:bullseye
 
 RUN apt update \
-&& apt upgrade -y \
-&& apt install nginx -y
+ && apt upgrade -y \
+ && apt install nginx -y		
+
+RUN mkdir -p /etc/nginx/ssl \
+ && apt install openssl -y \
+ && openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+	-keyout /etc/nginx/ssl/server.key \
+	-out /etc/nginx/ssl/server.crt \
+	-subj "/C=FR/ST=Paris/L=Paris/O=42/OU=42/CN=caguillo.42.fr/UID=caguillo"
+# Generate a self-signed certificat
+# req = create the certif with type -x509 / nodes = no pwd for the key
+# -out = the folder/file to save the certif
+# -keyout = the folder/file to save the key	
+
+RUN mkdir -p /var/run/nginx
+# Creates the directory /var/run/nginx inside the container's filesystem.
+# The -p option ensures that the command doesn't throw an error if the directory already exists
+# 	and will create any parent directories if needed.
+# /var/run/nginx is often used by NGINX to store runtime files, such as the process ID file (nginx.pid).
+# If this directory doesn’t exist when NGINX starts, it may fail or log an error.
+
+COPY conf/nginx.conf /etc/nginx/nginx.conf
+# Copies my NGINX configuration file (nginx.conf)
+# FROM conf/ (the directory on your local machine)
+# TO /etc/nginx/nginx.conf (the container's standard configuration directory)
+# NGINX uses /etc/nginx/nginx.conf as its main configuration file by default
+
+
+RUN chmod 755 /var/www/html \
+ && chown -R www-data:www-data /var/www/html
+# chmod ensures that:
+# - Files in /var/www/html are readable by everyone (necessary for a public web server).
+# - Only the owner (www-data) has write permissions for security.
+# chown ensures that:
+# - the web server (running as www-data) has proper access to read/write files it needs to serve.
+# These commands are foundational for setting up a secure and functional web server
+# environment in a containerized setup.
+
+# CMD ["cat", "/etc/nginx/nginx.conf"]
+CMD ["nginx", "-g", "daemon off;"]
