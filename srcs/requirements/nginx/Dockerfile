@@ -1,11 +1,11 @@
 FROM debian:bullseye
 
-RUN apt update \
- && apt upgrade -y \
- && apt install nginx -y		
+RUN apt-get update \
+ && apt-get upgrade -y \
+ && apt-get install nginx -y		
 
 RUN mkdir -p /etc/nginx/ssl \
- && apt install openssl -y \
+ && apt-get install openssl -y \
  && openssl req -x509 -nodes -days 365 -newkey rsa:4096 -sha256 \
 	-keyout /etc/nginx/ssl/server.key \
 	-out /etc/nginx/ssl/server.crt \
