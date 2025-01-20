@@ -4,11 +4,16 @@
 # this is read by the standalone daemon and embedded servers
 [server]
 
+[mysql]
+default-character-set=utf8
+
 # this is only for the mysqld standalone daemon
 [mysqld]
-
 user = mysql
 port = 3306
-datadir = /var/lib/mysql
-socket  = /run/mysqld/mysqld.sock
 bind-address = *
+# Folder to save data
+datadir = /var/lib/mysql
+# Socket used by mysql
+socket  = /run/mysqld/mysqld.sock 
+

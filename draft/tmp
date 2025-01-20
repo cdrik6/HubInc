@@ -1,0 +1,18 @@
+DOMAIN_NAME=
+
+# Mysql configuration
+SQL_DB_NAME=
+SQL_USER=
+SQL_USER_PWD=
+SQL_ROOT_PWD=
+
+# Wordpress Admin
+TITLE=INCEPTION
+ADMIN=
+ADMIN_PWD=
+ADMIN_EMAIL=
+
+# Wordpress User
+USER=
+USER_PWD=
+USER_MAIL=
