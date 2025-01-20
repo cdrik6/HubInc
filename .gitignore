@@ -1,2 +1,4 @@
 srcs/.env
 .env
+./srcs/.env
+/srcs/.env

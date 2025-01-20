@@ -1,5 +1,3 @@
-FROM openclassrooms/build_image
+FROM debian:bullseye
 
-RUN apt-get update \
-&& apt-get upgrade -y \
-&& apt-get install nginx -y
+CMD ["tail", "-f", "/dev/null"]
