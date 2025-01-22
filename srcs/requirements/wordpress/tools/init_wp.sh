@@ -1,16 +1,21 @@
 #!/bin/bash
 
-# wait the database ready
-while ! wp db check --allow-root --path=/var/www/wordpress/; do
-    echo "Waiting for Database to be ready..."
-    sleep 1
-done
+# # wait the database ready
+# while ! wp db check --allow-root --path=/var/www/wordpress/; do
+#     echo "Waiting for Database to be ready..."
+#     sleep 1
+# done
 
-if ! -e /var/www/wordpress/wp-config.php; then
+# ensure mariadb is running before continuing
+sleep 10
+
+if [ ! -e /var/www/wordpress/wp-config.php ]; then
     
 	wp config create --allow-root --dbname=$SQL_DB_NAME --dbuser=$SQL_USER --dbpass=$SQL_USER_PWD \
     				 --dbhost=mariadb:3306 --path='/var/www/wordpress'
 	
+	# sleep 10
+
 	wp core install --url=$DOMAIN_NAME --title=$TITLE --admin_user=$ADMIN --admin_password=$ADMIN_PWD \
 					--admin_email=$ADMIN_EMAIL --allow-root --path='/var/www/wordpress'
 	
@@ -19,8 +24,8 @@ if ! -e /var/www/wordpress/wp-config.php; then
 fi
 
 # if /run/php folder does not exist, create it
-if ! -d /run/php; then
-    mkdir ./run/php
+if [ ! -d /run/php ]; then
+    mkdir -p ./run/php
 fi
 
 # launch php-fpm

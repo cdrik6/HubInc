@@ -2,18 +2,15 @@
 # Use it for options that only the server (but not clients) should see
 
 # this is read by the standalone daemon and embedded servers
-[server]
+# [server]
 
-[mysql]
-default-character-set=utf8
+# [mysql]
+# default-character-set=utf8
 
 # this is only for the mysqld standalone daemon
 [mysqld]
-user = mysql
+datadir = /var/lib/mysql # Folder to save data
+socket  = /run/mysqld/mysqld.sock # Socket used by mysql
+bind-address=*
 port = 3306
-bind-address = *
-# Folder to save data
-datadir = /var/lib/mysql
-# Socket used by mysql
-socket  = /run/mysqld/mysqld.sock 
-
+user = mysql

@@ -13,8 +13,9 @@ COPY tools/init_db.sh /init_db.sh
 # Docker containers are isolated environments and the file paths inside the container
 # aren't the same as those the local system
 
+# Expose port to the host
+EXPOSE 3306
+
 ENTRYPOINT ["bash", "init_db.sh"]
 # execute MariaDB initialization script
 
-# Expose port to the host
-EXPOSE 3306

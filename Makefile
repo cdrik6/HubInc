@@ -6,7 +6,7 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/01/20 23:56:11 by caguillo         ###   ########.fr        #
+#    Updated: 2025/01/22 00:36:42 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,8 @@ down: stop
 	sudo $(DC) $(SRCS) down
 # stop and delete services
 
-clean: stop
-	sudo $(DC) $(SRCS) down -rmi all
+clean: stop 
+	sudo $(DC) $(SRCS) down --rmi all
 # -v deletes volumes
 # stop and delete services, remove containers, images, network (volumes if -v)
 
