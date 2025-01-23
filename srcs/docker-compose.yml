@@ -56,7 +56,7 @@ services:
     networks:
     - inception
     depends_on:
-    - wordpress
+    - wordpress    
     build:
       context: ./requirements/nginx    
       dockerfile: Dockerfile
