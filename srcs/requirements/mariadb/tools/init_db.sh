@@ -1,6 +1,7 @@
 #!/bin/bash
 
-service mysql start;
+# service mariadb start
+service mysql start
 
 # create the DB SQL_DB_NAME (define in .env)
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DB_NAME}\`;"

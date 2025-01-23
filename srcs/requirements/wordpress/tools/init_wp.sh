@@ -14,7 +14,7 @@ if [ ! -e /var/www/wordpress/wp-config.php ]; then
 	wp config create --allow-root --dbname=$SQL_DB_NAME --dbuser=$SQL_USER --dbpass=$SQL_USER_PWD \
     				 --dbhost=mariadb:3306 --path='/var/www/wordpress'
 	
-	# sleep 10
+	sleep 10
 
 	wp core install --url=$DOMAIN_NAME --title=$TITLE --admin_user=$ADMIN --admin_password=$ADMIN_PWD \
 					--admin_email=$ADMIN_EMAIL --allow-root --path='/var/www/wordpress'

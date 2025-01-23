@@ -6,7 +6,7 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/01/22 00:36:42 by caguillo         ###   ########.fr        #
+#    Updated: 2025/01/23 21:33:27 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ DC = docker-compose -f
 
 all:
 	mkdir -p /home/caguillo/data
-	mkdir -p /home/caguillo/data/wordpress-data
-	mkdir -p /home/caguillo/data/mariadb-data
+	mkdir -p /home/caguillo/data/wordpress_data
+	mkdir -p /home/caguillo/data/mariadb_data
 	docker ps -q | grep . || sudo $(DC) $(SRCS) up --build -d
 	
 re: fclean all
@@ -43,8 +43,8 @@ fclean: clean
 	sudo docker system prune -af --volumes
 	sudo rm -rf /home/caguillo/data	
 	
-# sudo rm -rf /home/caguillo/data/wordpress-data
-# sudo rm -rf /home/caguillo/data/mariadb-data	
+# sudo rm -rf /home/caguillo/data/wordpress_data
+# sudo rm -rf /home/caguillo/data/mariadb_data	
 # -a removes all unused images
 # -f bypasses the prompt = force
 # to delete volumes: --volumes

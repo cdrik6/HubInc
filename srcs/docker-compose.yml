@@ -1,18 +1,18 @@
 version: '3.8'
 
 volumes:
-  mariadb-data:
+  mariadb_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/caguillo/data/mariadb-data
-  wordpress-data:
+      device: /home/caguillo/data/mariadb_data
+  wordpress_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/caguillo/data/wordpress-data
+      device: /home/caguillo/data/wordpress_data
 
 services:
   # 
@@ -24,9 +24,9 @@ services:
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
-    image: mariadb:inception    
+    image: mariadb    
     volumes:
-    - mariadb-data:/var/lib/mysql
+    - mariadb_data:/var/lib/mysql
     restart: on-failure
     expose:
     - '3306'
@@ -35,7 +35,7 @@ services:
     container_name: wordpress
     env_file: .env
     volumes:
-    - wordpress-data:/var/www/wordpress
+    - wordpress_data:/var/www/wordpress
     networks:
     - inception    
     depends_on:
@@ -43,7 +43,7 @@ services:
     build:
       context: ./requirements/wordpress    
       dockerfile: Dockerfile
-    image: wordpress:inception     
+    image: wordpress     
     restart: on-failure
     expose:
     - '9000'
@@ -52,7 +52,7 @@ services:
     container_name: nginx
     env_file: .env
     volumes:
-    - wordpress-data:/var/www/wordpress
+    - wordpress_data:/var/www/wordpress
     networks:
     - inception
     depends_on:
@@ -60,7 +60,7 @@ services:
     build:
       context: ./requirements/nginx    
       dockerfile: Dockerfile
-    image: nginx:inception    
+    image: nginx
     ports:
     - '443:443'
     restart: always
