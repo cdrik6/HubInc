@@ -29,4 +29,4 @@ if [ ! -d /run/php ]; then
 fi
 
 # launch php-fpm
-/usr/sbin/php-fpm7.4 -F
+/usr/sbin/php-fpm7.3 -F

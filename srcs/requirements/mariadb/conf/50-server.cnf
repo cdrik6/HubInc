@@ -9,8 +9,10 @@
 
 # this is only for the mysqld standalone daemon
 [mysqld]
-datadir = /var/lib/mysql # Folder to save data
-socket  = /run/mysqld/mysqld.sock # Socket used by mysql
+# Folder to save data
+datadir = '/var/lib/mysql'
+# Socket used by mysql
+socket  = '/run/mysqld/mysqld.sock'
 bind-address=*
 port = 3306
 user = mysql

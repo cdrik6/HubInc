@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 volumes:
   mariadb_data:
@@ -6,13 +6,13 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/caguillo/data/mariadb_data
+      device: /home/mangue/data/mariadb_data
   wordpress_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/caguillo/data/wordpress_data
+      device: /home/mangue/data/wordpress_data
 
 services:
   # 
