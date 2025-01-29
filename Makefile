@@ -6,7 +6,7 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/01/23 21:33:27 by caguillo         ###   ########.fr        #
+#    Updated: 2025/01/29 01:41:17 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ DC = docker-compose -f
 
 all:
 	mkdir -p /home/caguillo/data
-	mkdir -p /home/caguillo/data/wordpress_data
-	mkdir -p /home/caguillo/data/mariadb_data
+	mkdir -p /home/caguillo/data/wordpress
+	mkdir -p /home/caguillo/data/mariadb
 	docker ps -q | grep . || sudo $(DC) $(SRCS) up --build -d
 	
 re: fclean all

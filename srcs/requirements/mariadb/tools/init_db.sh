@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# For debugging and test without Makefile delete mariadb in data each time, and mkdir mariadb
+
 # service mariadb start
 service mariadb start
 
@@ -9,12 +11,32 @@ until mysqladmin ping -h "localhost" --silent; do
     sleep 1
 done
 
-if [ -z "${SQL_DB_NAME}" ]; then
-  echo "Error: SQL_DB_NAME is not set."
-  exit 1
-fi
+# Check correct/regular names and pwds for mysql 
+# 
+# if [ -z "${SQL_DB_NAME}" ]; then
+#   echo "Error: SQL_DB_NAME is not set."
+#   exit 1
+# fi
+# 
+# if [ -z "${SQL_USER}" ]; then
+#   echo "Error: SQL_USER is not set."
+#   exit 1
+# fi
+# 
+# if [ -z "${SQL_USER_PWD}" ]; then
+#   echo "Error: SQL_USER_PWD is not set."
+#   exit 1
+# fi
+# 
+# if [ -z "${MYSQL_ROOT_PASSWORD}" ]; then
+#   echo "Error: MYSQL_ROOT_PASSWORD is not set."
+#   exit 1
+# fi
 
-# icici
+# chmod 755 /run/mysqld/mysqld.sock
+# chown -R mysql:mysql /run/mysqld/mysqld.sock 
+# chmod 755 /var/run/mysqld/mysqld.sock
+# chown -R mysql:mysql /var/run/mysqld/mysqld.sock 
 
 # create the DB SQL_DB_NAME (define in .env)
 mysql -e "CREATE DATABASE IF NOT EXISTS ${SQL_DB_NAME};"
@@ -35,14 +57,14 @@ mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
 echo "4"
 
 # update new parameters
-mysql -e "FLUSH PRIVILEGES;"
+mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
 echo "5"
 
 # first switch off mysql
-mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown
+mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" --port=3306 --socket='var/run/mysqld/mysqld.sock' shutdown
 echo "6"
 
 # then restart mysql in order it runs with new parameters
-mysqld_safe --user=mysql --port=3306 --bind-address=0.0.0.0 --socket='/run/mysqld/mysqld.sock' --datadir='/var/lib/mysql'
+mysqld_safe --user=mysql --port=3306 --bind-address=0.0.0.0 --socket='var/run/mysqld/mysqld.sock' --datadir='/var/lib/mysql'
 
 echo "init DB done!"
