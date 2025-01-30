@@ -7,8 +7,9 @@
 # done
 
 # ensure mariadb is running before continuing
-sleep 10
+# sleep 10
 
+# if wp-config.php file does not exist
 if [ ! -e /var/www/wordpress/wp-config.php ]; then
     
 	wp config create --allow-root --dbname=$SQL_DB_NAME --dbuser=$SQL_USER --dbpass=$SQL_USER_PWD \
@@ -25,8 +26,12 @@ fi
 
 # if /run/php folder does not exist, create it
 if [ ! -d /run/php ]; then
-    mkdir -p ./run/php
+    mkdir -p /run/php
 fi
+
+echo "3"
 
 # launch php-fpm
 /usr/sbin/php-fpm7.3 -F
+
+echo "4"

@@ -67,4 +67,4 @@ echo "6"
 # then restart mysql in order it runs with new parameters
 mysqld_safe --user=mysql --port=3306 --bind-address=0.0.0.0 --socket='var/run/mysqld/mysqld.sock' --datadir='/var/lib/mysql'
 
-echo "init DB done!"
+echo "Init MariaDB done!"

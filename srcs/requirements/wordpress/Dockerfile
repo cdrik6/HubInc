@@ -12,12 +12,12 @@ RUN wget https://wordpress.org/latest.tar.gz -P /var/www \
 # ensures that all files and directories under /var/www/wordpress 
 # are owned by the root user and group
 
-COPY conf/php.conf /etc/php/7.3/fpm/pool.d/www.conf
-
 # to get the CLI tool to configure wp with a script
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
  && chmod +x wp-cli.phar \
  && mv wp-cli.phar /usr/local/bin/wp
+
+COPY conf/php.conf /etc/php/7.3/fpm/pool.d/www.conf
 
 COPY tools/init_wp.sh /init_wp.sh
 
