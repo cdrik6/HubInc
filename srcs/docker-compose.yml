@@ -1,66 +1,60 @@
 services:
-  # mariadb:
-  #   container_name: mariadb
-  #   build: ./requirements/mariadb
-  #   image: mariadb
-  #   restart: on-failure
-  #   expose:
-  #   - '3306'
-  #   volumes:
-  #   - mariadb:/var/lib/mysql
-  #   env_file:
-  #   - .env
-  #   networks:
-  #   - inception      
-  # wordpress:
-  #   container_name: wordpress
-  #   env_file: .env
-  #   volumes:
-  #   - wordpress:/var/www/wordpress
-  #   networks:
-  #   - inception    
-  #   depends_on:
-  #   - mariadb
-  #   build:
-  #     context: ./requirements/wordpress    
-  #     dockerfile: Dockerfile
-  #   image: wordpress     
-  #   restart: on-failure
-  #   expose:
-  #   - '9000'  
-  nginx:
-    container_name: nginx
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    image: mariadb
+    restart: on-failure
+    expose:
+    - "3306"
+    volumes:
+    - mariadb:/var/lib/mysql
     env_file:
     - .env
+    networks:
+    - inception      
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress      
+    image: wordpress
+    restart: always
+    expose:
+    - "9000"
     volumes:
     - wordpress:/var/www/wordpress
-    # networks:
-    # - inception
-    # depends_on:
-    # - wordpress    
-    build:
-      context: ./requirements/nginx    
-      dockerfile: Dockerfile
+    env_file:
+    - .env
+    depends_on:
+    - mariadb
+    networks:
+    - inception
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
     image: nginx
-    ports:
-    - '443:443'
     restart: always
-
+    ports:
+    - "443:443"
+    volumes:
+    - wordpress:/var/www/wordpress
+    env_file:
+    - .env    
+    depends_on:
+    - wordpress
+    networks:
+    - inception
 volumes:
-  # mariadb:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     o: bind
-  #     device: /home/mangue/data/mariadb
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mangue/data/mariadb
   wordpress:
     driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/mangue/data/wordpress
-
-# networks:
-#   inception:
-#     name: inception
-#     driver: bridge
+networks:
+  inception:    
+    driver: bridge

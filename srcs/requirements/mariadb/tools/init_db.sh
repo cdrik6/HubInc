@@ -53,7 +53,7 @@ mysql -e "GRANT ALL PRIVILEGES ON ${SQL_DB_NAME}.* TO '${SQL_USER}'@'localhost' 
 echo "3"
 
 # change/set the password for the MySQL root user (only when accessed from the local machine) --> more secure
-mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
 echo "4"
 
 # update new parameters
@@ -61,7 +61,7 @@ mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
 echo "5"
 
 # first switch off mysql
-mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" --port=3306 --socket='var/run/mysqld/mysqld.sock' shutdown
+mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" --socket='var/run/mysqld/mysqld.sock' shutdown
 echo "6"
 
 # then restart mysql in order it runs with new parameters
