@@ -39,24 +39,28 @@ done
 # chmod 755 /var/run/mysqld/mysqld.sock
 # chown -R mysql:mysql /var/run/mysqld/mysqld.sock 
 
-echo "1:"
-# create the DB SQL_DB_NAME (define in .env)
-mariadb -e "CREATE DATABASE IF NOT EXISTS ${SQL_DB_NAME};"
-
-echo "2:"
-# create the user SQL_USER of the DB (define in .env)
-# 'localhost'
-mariadb -e "CREATE USER IF NOT EXISTS '${SQL_USER}'@'localhost' IDENTIFIED BY '${SQL_USER_PWD}';"
-
-echo "3:"
-# give whole rigths the user SQL_USER of the DB (define in .env)
-# % -> allows the user to connect from any host
-mariadb -e "GRANT ALL PRIVILEGES ON ${SQL_DB_NAME}.* TO '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_USER_PWD}';"
 
 echo "4:"
 # change/set the password for the MySQL root user (only when accessed from the local machine) --> more secure
 # mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
-mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+
+# echo "0:"
+# mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "DELETE FROM mysql.user WHERE User='';"
+
+echo "1:"
+# create the DB SQL_DB_NAME (define in .env)
+mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "CREATE DATABASE IF NOT EXISTS ${SQL_DB_NAME};"
+
+echo "2:"
+# create the user SQL_USER of the DB (define in .env)
+# 'localhost'
+mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "CREATE USER IF NOT EXISTS '${SQL_USER}'@'localhost' IDENTIFIED BY '${SQL_USER_PWD}';"
+
+echo "3:"
+# give whole rigths the user SQL_USER of the DB (define in .env)
+# % -> allows the user to connect from any host
+mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON ${SQL_DB_NAME}.* TO '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_USER_PWD}';"
 
 echo "5: flush"
 # update new parameters
