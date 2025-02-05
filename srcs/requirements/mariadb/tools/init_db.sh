@@ -39,24 +39,49 @@ done
 # chmod 755 /var/run/mysqld/mysqld.sock
 # chown -R mysql:mysql /var/run/mysqld/mysqld.sock 
 
-# Secure the initial root access and remove default databases
-mariadb -h localhost -u root -p"${MYSQL_ROOT_PASSWORD}" <<EOF
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
-DELETE FROM mysql.user WHERE User='';
-DROP DATABASE IF EXISTS test;
-FLUSH PRIVILEGES;
-EOF
+echo "1:"
+# create the DB SQL_DB_NAME (define in .env)
+mariadb -e "CREATE DATABASE IF NOT EXISTS ${SQL_DB_NAME};"
 
-# Create a new database and user, use env credentials
-mariadb -h localhost -u root -p"${MYSQL_ROOT_PASSWORD}" <<EOF
-CREATE DATABASE IF NOT EXISTS ${SQL_DB_NAME};
-CREATE USER IF NOT EXISTS '${SQL_USER}'@'localhost' IDENTIFIED BY '${SQL_USER_PWD}';
-GRANT ALL PRIVILEGES ON ${SQL_DB_NAME}.* TO '${SQL_USER}' IDENTIFIED BY '${SQL_USER_PWD}';
-FLUSH PRIVILEGES;
-EOF
+echo "2:"
+# create the user SQL_USER of the DB (define in .env)
+# 'localhost'
+mariadb -e "CREATE USER IF NOT EXISTS '${SQL_USER}'@'localhost' IDENTIFIED BY '${SQL_USER_PWD}';"
 
-# Shutdown and restart with your specified configuration
+echo "3:"
+# give whole rigths the user SQL_USER of the DB (define in .env)
+# % -> allows the user to connect from any host
+mariadb -e "GRANT ALL PRIVILEGES ON ${SQL_DB_NAME}.* TO '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_USER_PWD}';"
+
+echo "4:"
+# change/set the password for the MySQL root user (only when accessed from the local machine) --> more secure
+# mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+
+echo "5: flush"
+# update new parameters
+mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
+# mariadb -e "FLUSH PRIVILEGES;"
+
+echo "5b: socket?"
+mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW VARIABLES LIKE 'socket';"
+
+echo "6: shutdown"
+# first switch off mysql
 mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown
-mysqld_safe --user=mysql --port=3306 --bind-address=0.0.0.0  --socket='/run/mysqld/mysqld.sock' --datadir='/var/lib/mysql' --pid-file='/var/run/mysqld/mysqld.pid' --skip-networking=off --max_allowed_packet=64M #--log-error='/var/log/mysql/error.log'
+# mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" --user=root --socket='/run/mysqld/mysqld.sock' shutdown
 
-echo "MariaDB is ready to use!"
+# echo "6b: socket?"
+# mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW VARIABLES LIKE 'socket';"
+
+echo "7: mysqld_safe"
+# then restart mysql in order it runs with new parameters
+# mysqld_safe --user=mysql --port=3306 --bind-address=0.0.0.0 --socket='/run/mysqld/mysqld.sock' --datadir='/var/lib/mysql'
+mysqld_safe
+# systemctl start mariadb
+
+# echo "7b: socket?"
+# # mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW VARIABLES LIKE 'socket';"
+# mysql -e "SHOW VARIABLES LIKE 'socket';"
+
+echo "Init MariaDB done!"

@@ -10,51 +10,51 @@ services:
     - mariadb:/var/lib/mysql
     env_file:
     - .env
-    networks:
-    - inception      
-  wordpress:
-    container_name: wordpress
-    build: ./requirements/wordpress      
-    image: wordpress
-    restart: always
-    expose:
-    - "9000"
-    volumes:
-    - wordpress:/var/www/wordpress
-    env_file:
-    - .env
-    depends_on:
-    - mariadb
-    networks:
-    - inception
-  nginx:
-    container_name: nginx
-    build: ./requirements/nginx
-    image: nginx
-    restart: always
-    ports:
-    - "443:443"
-    volumes:
-    - wordpress:/var/www/wordpress
-    env_file:
-    - .env    
-    depends_on:
-    - wordpress
-    networks:
-    - inception
+    # networks:
+    # - inception      
+  # wordpress:
+  #   container_name: wordpress
+  #   build: ./requirements/wordpress      
+  #   image: wordpress
+  #   restart: always
+  #   expose:
+  #   - "9000"
+  #   volumes:
+  #   - wordpress:/var/www/wordpress
+  #   env_file:
+  #   - .env
+  #   depends_on:
+  #   - mariadb
+  #   networks:
+  #   - inception
+  # nginx:
+  #   container_name: nginx
+  #   build: ./requirements/nginx
+  #   image: nginx
+  #   restart: always
+  #   ports:
+  #   - "443:443"
+  #   volumes:
+  #   - wordpress:/var/www/wordpress
+  #   env_file:
+  #   - .env    
+  #   depends_on:
+  #   - wordpress
+  #   networks:
+  #   - inception
 volumes:
   mariadb:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/mangue/data/mariadb
-  wordpress:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/mangue/data/wordpress
-networks:
-  inception:    
-    driver: bridge
+      device: /home/caguillo/data/mariadb
+  # wordpress:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     o: bind
+  #     device: /home/caguillo/data/wordpress
+# networks:
+#   inception:    
+#     driver: bridge
