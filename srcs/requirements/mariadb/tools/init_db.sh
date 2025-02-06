@@ -40,10 +40,7 @@ done
 # chown -R mysql:mysql /var/run/mysqld/mysqld.sock 
 
 
-echo "4:"
-# change/set the password for the MySQL root user (only when accessed from the local machine) --> more secure
-# mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
-mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+
 
 # echo "0:"
 # mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "DELETE FROM mysql.user WHERE User='';"
@@ -62,13 +59,18 @@ echo "3:"
 # % -> allows the user to connect from any host
 mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON ${SQL_DB_NAME}.* TO '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_USER_PWD}';"
 
+echo "4:"
+# change/set the password for the MySQL root user (only when accessed from the local machine) --> more secure
+# mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+
 echo "5: flush"
 # update new parameters
 mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
 # mariadb -e "FLUSH PRIVILEGES;"
 
-echo "5b: socket?"
-mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW VARIABLES LIKE 'socket';"
+# echo "5b: socket?"
+# mariadb -u root -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW VARIABLES LIKE 'socket';"
 
 echo "6: shutdown"
 # first switch off mysql
