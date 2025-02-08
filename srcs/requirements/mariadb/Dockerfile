@@ -5,13 +5,13 @@ RUN apt-get update \
  && apt-get install -y mariadb-server
 # apt-get more script vs apt more human 
 
-COPY conf/my.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY conf/my.cnf /etc/mysql/my.cnf
 # CMD ["cat", "etc/mysql/mariadb.conf.d/50-server.cnf"]
 
 # RUN mkdir -p /var/run/mysqld /var/lib/mysql \
-#  && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql \ 
-#  && chmod 777 /var/run/mysqld /var/lib/mysql 
-# # directories needed by mysql /run/mysqld
+# && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql \ 
+# && chmod 777 /var/run/mysqld /var/lib/mysql 
+## directories needed by mysql /run/mysqld
 
 # RUN sudo chmod -R 755 /run/mysql/
 
@@ -25,3 +25,4 @@ EXPOSE 3306
 
 ENTRYPOINT ["bash", "init_db.sh"]
 # execute MariaDB initialization script
+

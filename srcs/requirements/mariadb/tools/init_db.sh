@@ -1,13 +1,9 @@
 #!/bin/bash
 
-# For debugging and test without Makefile delete mariadb in data each time, and mkdir mariadb
-
-# service mariadb start
 service mariadb start
 
-
 # Wait for MariaDB to be ready
-until mysqladmin ping -h "localhost" --silent; do
+until mysqladmin ping -h localhost --silent; do
     echo "MariaDB is initializing..."
     sleep 1
 done
@@ -34,29 +30,34 @@ done
 #   exit 1
 # fi
 
-# chmod 755 /run/mysqld/mysqld.sock
-# chown -R mysql:mysql /run/mysqld/mysqld.sock 
-# chmod 755 /var/run/mysqld/mysqld.sock
-# chown -R mysql:mysql /var/run/mysqld/mysqld.sock 
+echo "1:"
+# create the DB SQL_DB_NAME (define in .env)
+mysql -e "CREATE DATABASE IF NOT EXISTS ${SQL_DB_NAME};"
 
-# Secure the initial root access and remove default databases
-mariadb -h localhost -u root -p"${MYSQL_ROOT_PASSWORD}" <<EOF
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
-DELETE FROM mysql.user WHERE User='';
-DROP DATABASE IF EXISTS test;
-FLUSH PRIVILEGES;
-EOF
+echo "2:"
+# create the user SQL_USER of the DB (define in .env)
+mysql -e "CREATE USER IF NOT EXISTS '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_USER_PWD}';"
 
-# Create a new database and user, use env credentials
-mariadb -h localhost -u root -p"${MYSQL_ROOT_PASSWORD}" <<EOF
-CREATE DATABASE IF NOT EXISTS ${SQL_DB_NAME};
-CREATE USER IF NOT EXISTS '${SQL_USER}'@'localhost' IDENTIFIED BY '${SQL_USER_PWD}';
-GRANT ALL PRIVILEGES ON ${SQL_DB_NAME}.* TO '${SQL_USER}' IDENTIFIED BY '${SQL_USER_PWD}';
-FLUSH PRIVILEGES;
-EOF
+echo "3:"
+# give whole rigths the user SQL_USER of the DB (define in .env)
+# % -> allows the user to connect from any host
+# The GRANT OPTION privilege allows a user to pass on any privileges she has to other users
+mysql -e "GRANT ALL PRIVILEGES ON ${SQL_DB_NAME}.* TO '${SQL_USER}'@'%' IDENTIFIED BY '${SQL_USER_PWD}';"
 
-# Shutdown and restart with your specified configuration
-mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown
-mysqld_safe --user=mysql --port=3306 --bind-address=0.0.0.0  --socket='/run/mysqld/mysqld.sock' --datadir='/var/lib/mysql' --pid-file='/var/run/mysqld/mysqld.pid' --skip-networking=off --max_allowed_packet=64M #--log-error='/var/log/mysql/error.log'
+echo "4: socket?"
+mysql -e "SHOW VARIABLES LIKE 'socket';"
 
-echo "MariaDB is ready to use!"
+echo "5: flush"
+# update new parameters
+mysql -e "FLUSH PRIVILEGES;"
+
+echo "6: stop"
+# first switch off
+service mariadb stop
+
+echo "7: mysqld_safe"
+# then restart mysql in order it runs with new parameters
+# mysqld_safe --user=mysql --port=3306 --bind-address=0.0.0.0 --socket='/run/mysqld/mysqld.sock' --datadir='/var/lib/mysql'
+mysqld_safe
+
+mysql -e "SHOW DATABASES;"

@@ -3,13 +3,14 @@ services:
     container_name: mariadb
     build: ./requirements/mariadb
     image: mariadb
-    restart: on-failure
+    restart: on-failure    
     expose:
     - "3306"
     volumes:
     - mariadb:/var/lib/mysql
     env_file:
     - .env
+
     # networks:
     # - inception      
   # wordpress:
@@ -42,6 +43,7 @@ services:
   #   - wordpress
   #   networks:
   #   - inception
+  
 volumes:
   mariadb:
     driver: local
