@@ -15,7 +15,7 @@ COPY conf/my.cnf /etc/mysql/my.cnf
 
 # RUN sudo chmod -R 755 /run/mysql/
 
-COPY tools/init_db.sh /init_db.sh
+# COPY tools/init_db.sh /init_db.sh
 # need to copy as the container know the root directory
 # Docker containers are isolated environments and the file paths inside the container
 # aren't the same as those the local system
@@ -23,6 +23,8 @@ COPY tools/init_db.sh /init_db.sh
 EXPOSE 3306
 # Expose port to the host
 
-ENTRYPOINT ["bash", "init_db.sh"]
+CMD ["tail", "-f", "/dev/null"]
+
+# ENTRYPOINT ["bash", "init_db.sh"]
 # execute MariaDB initialization script
 
