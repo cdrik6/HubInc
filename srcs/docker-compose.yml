@@ -3,31 +3,37 @@ services:
     container_name: mariadb
     build: ./requirements/mariadb
     image: mariadb
-    restart: on-failure    
+    restart: on-failure
     expose:
-    - "3306"
+      - "3306"
     volumes:
-    - mariadb:/var/lib/mysql
+      - mariadb:/var/lib/mysql
     env_file:
-    - .env
-
-    # networks:
-    # - inception      
+      - .env
+    networks:
+      - inception    
+    # healthcheck:      
+    #   test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    #   interval: 10s
+    #   retries: 5
+    #   start_period: 30s
+    #   timeout: 10s      
+    # command: mysqld --innodb_force_recovery=1   
   # wordpress:
   #   container_name: wordpress
   #   build: ./requirements/wordpress      
   #   image: wordpress
   #   restart: always
   #   expose:
-  #   - "9000"
+  #     - "9000"
   #   volumes:
-  #   - wordpress:/var/www/wordpress
+  #     - wordpress:/var/www/wordpress
   #   env_file:
-  #   - .env
+  #     - .env
   #   depends_on:
-  #   - mariadb
+  #     - mariadb
   #   networks:
-  #   - inception
+  #     - inception
   # nginx:
   #   container_name: nginx
   #   build: ./requirements/nginx
@@ -56,7 +62,8 @@ volumes:
   #   driver_opts:
   #     type: none
   #     o: bind
-  #     device: /home/caguillo/data/wordpress
-# networks:
-#   inception:    
-#     driver: bridge
+  #     device: /home/mangue/data/wordpress
+
+networks:
+  inception:    
+    driver: bridge

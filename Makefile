@@ -6,7 +6,7 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/01/31 02:07:16 by caguillo         ###   ########.fr        #
+#    Updated: 2025/02/09 00:19:17 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,3 +48,5 @@ fclean: clean
 # -a removes all unused images
 # -f bypasses the prompt = force
 # to delete volumes: --volumes
+
+# sudo docker-compose run --rm mariadb sh -c "rm -f /var/run/mysqld/mysqld.pid"

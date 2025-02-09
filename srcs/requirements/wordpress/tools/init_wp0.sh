@@ -18,14 +18,14 @@ sleep 10
 # if wp-config.php file does not exist
 if [ ! -e /var/www/wordpress/wp-config.php ]; then
 	echo "0"
-	wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_USER_PWD" \
-    				 --dbhost=mariadb:3306 --allow-root --path='/var/www/wordpress'	
+	wp config create --allow-root --dbname=$SQL_DB_NAME --dbuser=$SQL_USER --dbpass=$SQL_USER_PWD \
+    				 --dbhost=mariadb --path='/var/www/wordpress'	
 	echo "1"				 
-	wp core install --url="$DOMAIN_NAME" --title="$TITLE" --admin_user="$ADMIN" --admin_password="$ADMIN_PWD" \
-					--admin_email="$ADMIN_EMAIL" --allow-root --path='/var/www/wordpress'	
+	wp core install --url=$DOMAIN_NAME --title=$TITLE --admin_user=$ADMIN --admin_password=$ADMIN_PWD \
+					--admin_email=$ADMIN_EMAIL --allow-root --path='/var/www/wordpress'	
 	echo "2"				
-	wp user create  "$USER" "$USER_EMAIL" --user_pass="$USER_PWD" --role=author \
-				   	--allow-root --path='/var/www/wordpress'
+	wp user create --allow-root --role=author $USER $USER_EMAIL --user_pass=$USER_PWD \
+				   --path='/var/www/wordpress' #>> /log.txt
 	echo "3"			   
 	# ensure any cached data is cleared to avoid conflicts
 	wp cache flush --allow-root --path='/var/www/wordpress'

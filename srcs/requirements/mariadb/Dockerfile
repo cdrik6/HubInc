@@ -2,12 +2,12 @@ FROM debian:bullseye
 
 RUN apt-get update \
  && apt-get upgrade -y \
- && apt-get install -y mariadb-server
+ && apt-get install -y mariadb-server 
+#  && chown -R mysql:mysql /var/lib/mysql
 # apt-get more script vs apt more human 
 
 COPY conf/my.cnf /etc/mysql/my.cnf
 # specific settings
-
 
 COPY tools/init_db.sh /init_db.sh
 # need to copy as the container know the root directory
