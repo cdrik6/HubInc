@@ -11,30 +11,28 @@ services:
     volumes:
       - mariadb:/var/lib/mysql    
     networks:
-      - inception    
-    # - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
+      - inception        
     # healthcheck:      
     #   test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
     #   interval: 10s
     #   retries: 5
     #   start_period: 30s
-    #   timeout: 10s      
-    # command: mysqld --innodb_force_recovery=1   
-  # wordpress:
-  #   container_name: wordpress
-  #   build: ./requirements/wordpress      
-  #   image: wordpress
-  #   restart: always
-  #   expose:
-  #     - "9000"
-  #   volumes:
-  #     - wordpress:/var/www/wordpress
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - mariadb
-  #   networks:
-  #     - inception
+    #   timeout: 10s          
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress      
+    image: wordpress
+    restart: always
+    expose:
+      - "9000"
+    volumes:
+      - wordpress:/var/www/wordpress
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+    networks:
+      - inception
   # nginx:
   #   container_name: nginx
   #   build: ./requirements/nginx
@@ -58,12 +56,12 @@ volumes:
       type: none
       o: bind
       device: /home/caguillo/data/mariadb
-  # wordpress:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     o: bind
-  #     device: /home/caguillo/data/wordpress
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/caguillo/data/wordpress
 
 networks:
   inception:    
