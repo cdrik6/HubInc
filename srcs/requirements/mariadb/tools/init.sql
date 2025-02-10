@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS ${DB_NAME};
+SHOW DATABASES;
+
+CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_USER_PWD}';
+SELECT user, host FROM mysql.user;
+
+GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';
+FLUSH PRIVILEGES;
+
+SELECT user, host, authentication_string, plugin FROM mysql.user;
+SHOW GRANTS FOR '${DB_USER}'@'%';

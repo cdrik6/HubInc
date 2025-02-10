@@ -6,12 +6,13 @@ services:
     restart: on-failure
     expose:
       - "3306"
-    volumes:
-      - mariadb:/var/lib/mysql
     env_file:
-      - .env
+      - .env  
+    volumes:
+      - mariadb:/var/lib/mysql    
     networks:
       - inception    
+    # - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
     # healthcheck:      
     #   test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
     #   interval: 10s
@@ -56,13 +57,13 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/mangue/data/mariadb
+      device: /home/caguillo/data/mariadb
   # wordpress:
   #   driver: local
   #   driver_opts:
   #     type: none
   #     o: bind
-  #     device: /home/mangue/data/wordpress
+  #     device: /home/caguillo/data/wordpress
 
 networks:
   inception:    
