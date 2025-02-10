@@ -9,19 +9,19 @@ COPY conf/my.cnf /etc/mysql/my.cnf
 # specific settings
 
 
-COPY tools/init.sql /docker-entrypoint-initdb.d/init.sql
+# COPY tools/init.sql /docker-entrypoint-initdb.d/init.sql
 
-RUN chown mysql:mysql /docker-entrypoint-initdb.d/init.sql
+# RUN chown mysql:mysql /docker-entrypoint-initdb.d/init.sql
 
-# COPY tools/init_db.sh /init_db.sh
-# # need to copy as the container know the root directory
-# # Docker containers are isolated environments and the file paths inside the container
-# # aren't the same as those the local system
+COPY tools/init_db.sh /init_db.sh
+# need to copy as the container know the root directory
+# Docker containers are isolated environments and the file paths inside the container
+# aren't the same as those the local system
 
 EXPOSE 3306
 # Expose port to the host
 
-CMD ["mysqld_safe"]
-# ENTRYPOINT ["bash", "init_db.sh"]
+# CMD ["mysqld_safe"]
+ENTRYPOINT ["bash", "init_db.sh"]
 # execute MariaDB initialization script
 # for debbug: CMD ["tail", "-f", "/dev/null"]

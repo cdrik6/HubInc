@@ -1,9 +1,10 @@
 #!/bin/bash
-service mariadb start
+# service mariadb start
 # # mysqld --user=mysql --datadir=/var/lib/mysql
-# echo "0"
+echo "0"
 # mysqld_safe --datadir='/var/lib/mysql' &
-# echo "1"
+mysqld_safe &
+echo "1"
 # mysql -u root
 # echo "2"
 
@@ -13,6 +14,7 @@ until mysqladmin ping -h localhost --silent; do
     sleep 1
 done
 
+echo "3"
 # # Configaration file my.cnf
 # echo
 # cat etc/mysql/my.cnf
@@ -56,14 +58,15 @@ mysql -e "SHOW GRANTS FOR '${DB_USER}'@'%';"
 echo
 
 # # shutdown/stop in order to launche the safe mode need to stop before (avoid double process)
-mysqladmin shutdown
+# mysqladmin shutdown
 # --wait-for-all-slaves
 # Defers shutdown until after all binlogged events have
 # been sent to all connected slaves
 
 # # & = running in background
 # # mysqld_safe --datadir='/var/lib/mysql' &
-mysqld_safe
+# mysqld_safe
+exec mariadb
 
 
 # # status
@@ -83,4 +86,10 @@ mysqld_safe
 # - si on met mysqld_safe & + mysql au debut du script, a la fin du script mariadb exit
 # - si on lance mysqld_safe sans faire un shutdown (mariadb start au debut), alors error : process already exit
 # chown -R mysql:mysql /var/lib/mysql -->native: drwxr-xr-x 4 mysql mysql 4096 Feb  9 20:29 mysql
+
+# A daemon is a background process that runs continuously, waiting for requests or performing tasks.
+# In MariaDB, the daemon is mysqld, the main database server process.
+# mysqld → The main MariaDB server process (the database engine).
+# mysqld_safe → A wrapper script that monitors and restarts mysqld if it crashes.
+# mysqladmin → A client tool to manage MariaDB, including stopping the daemon.
 
