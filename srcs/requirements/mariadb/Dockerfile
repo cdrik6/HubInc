@@ -10,7 +10,7 @@ COPY conf/my.cnf /etc/mysql/my.cnf
 
 
 # COPY tools/init.sql /docker-entrypoint-initdb.d/init.sql
-
+COPY tools/init.sql /init.sql
 # RUN chown mysql:mysql /docker-entrypoint-initdb.d/init.sql
 
 COPY tools/init_db.sh /init_db.sh
