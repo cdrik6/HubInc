@@ -93,3 +93,7 @@ exec mariadb
 # mysqld_safe → A wrapper script that monitors and restarts mysqld if it crashes.
 # mysqladmin → A client tool to manage MariaDB, including stopping the daemon.
 
+# COPY tools/init.sql /docker-entrypoint-initdb.d/init.sql ne marche pas car deja
+# par defaut il y a des DB donc mysql de va pas dans le dossier
+# apt-get : more script vs apt : more human
+

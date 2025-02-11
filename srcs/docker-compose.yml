@@ -7,7 +7,7 @@ services:
     expose:
       - "3306"
     env_file:
-      - .env  
+      - .env.tmp  
     volumes:
       - mariadb:/var/lib/mysql    
     networks:
@@ -18,21 +18,21 @@ services:
     #   retries: 5
     #   start_period: 30s
     #   timeout: 10s          
-  wordpress:
-    container_name: wordpress
-    build: ./requirements/wordpress      
-    image: wordpress
-    restart: always
-    expose:
-      - "9000"
-    volumes:
-      - wordpress:/var/www/wordpress
-    env_file:
-      - .env
-    depends_on:
-      - mariadb
-    networks:
-      - inception
+  # wordpress:
+  #   container_name: wordpress
+  #   build: ./requirements/wordpress      
+  #   image: wordpress
+  #   restart: always
+  #   expose:
+  #     - "9000"
+  #   volumes:
+  #     - wordpress:/var/www/wordpress
+  #   env_file:
+  #     - .env.tmp
+  #   depends_on:
+  #     - mariadb
+  #   networks:
+  #     - inception
   # nginx:
   #   container_name: nginx
   #   build: ./requirements/nginx
@@ -43,7 +43,7 @@ services:
   #   volumes:
   #   - wordpress:/var/www/wordpress
   #   env_file:
-  #   - .env    
+  #   - .env.tmp    
   #   depends_on:
   #   - wordpress
   #   networks:
@@ -56,12 +56,12 @@ volumes:
       type: none
       o: bind
       device: /home/caguillo/data/mariadb
-  wordpress:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/caguillo/data/wordpress
+  # wordpress:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     o: bind
+  #     device: /home/caguillo/data/wordpress
 
 networks:
   inception:    
