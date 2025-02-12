@@ -17,6 +17,8 @@ sleep 10
 
 # if wp-config.php file does not exist
 if [ ! -e /var/www/wordpress/wp-config.php ]; then
+	echo "00"
+	cd /var/www/wordpress
 	echo "0"
 	wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_USER_PWD" \
     				 --dbhost=mariadb:3306 --allow-root --path='/var/www/wordpress'	
