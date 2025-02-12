@@ -42,6 +42,8 @@ RUN chmod 755 /var/www/html \
 # These commands are foundational for setting up a secure and functional web server
 # environment in a containerized setup.
 
+EXPOSE 443
+
 CMD ["nginx", "-g", "daemon off;"]
 # -g is used to pass the daemon off; directive to Nginx
 # In Docker, the container must have a single foreground process to keep it running.

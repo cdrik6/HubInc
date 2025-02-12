@@ -3,7 +3,7 @@ services:
     container_name: mariadb
     build: ./requirements/mariadb
     image: mariadb
-    restart: always
+    restart: unless-stopped
     expose:
       - "3306"
     env_file:
@@ -22,7 +22,7 @@ services:
     container_name: wordpress
     build: ./requirements/wordpress      
     image: wordpress
-    restart: always
+    restart: on-failure
     expose:
       - "9000"
     volumes:
@@ -33,21 +33,21 @@ services:
       - mariadb
     networks:
       - inception
-  # nginx:
-  #   container_name: nginx
-  #   build: ./requirements/nginx
-  #   image: nginx
-  #   restart: always
-  #   ports:
-  #   - "443:443"
-  #   volumes:
-  #   - wordpress:/var/www/wordpress
-  #   env_file:
-  #   - .env.tmp    
-  #   depends_on:
-  #   - wordpress
-  #   networks:
-  #   - inception
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    image: nginx
+    restart: always
+    ports:
+    - "443:443"
+    volumes:
+    - wordpress:/var/www/wordpress
+    env_file:
+    - .env.tmp    
+    depends_on:
+    - wordpress
+    networks:
+    - inception
   
 volumes:
   mariadb:
@@ -55,13 +55,13 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/mangue/data/mariadb
+      device: /home/caguillo/data/mariadb
   wordpress:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/mangue/data/wordpress
+      device: /home/caguillo/data/wordpress
 
 networks:
   inception:    
