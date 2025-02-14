@@ -55,13 +55,13 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/caguillo/data/mariadb
+      device: /home/mangue/data/mariadb
   wordpress:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/caguillo/data/wordpress
+      device: /home/mangue/data/wordpress
 
 networks:
   inception:    
