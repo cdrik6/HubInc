@@ -17,3 +17,7 @@ if [ -d "/var/lib/mysql/$DB_NAME" ]; then
 else	
 	mysqld --init-file="/tmp/init.sql" # start mysql server with init.sql a start
 fi
+
+# Note: instead of SED use ECHO and output redirection > et >> 
+# echo "CREATE DATABASE IF NOT EXISTS $DB_NAME ;" > /tmp/init.sql
+# ... >> /tmp/init.sql

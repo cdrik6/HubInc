@@ -31,8 +31,11 @@ COPY conf/nginx.conf /etc/nginx/nginx.conf
 # /etc/nginx/conf.d --> directory for site-specific files, included by nginx.conf
 # /etc/nginx/nginx.conf --> main/global configuration file, affects the entire Nginx server
 
-RUN chmod 755 /var/www/html \
- && chown -R www-data:www-data /var/www/html
+# RUN chmod 755 /var/www/html \
+#  && chown -R www-data:www-data /var/www/html
+RUN mkdir -p /var/www/wordpress \
+ && chmod 755 /var/www/wordpress \
+ && chown -R www-data:www-data /var/www/wordpress
 # chmod ensures that:
 # - Files in /var/www/html are readable by everyone (necessary for a public web server).
 # - Only the owner (www-data) has write permissions for security.
