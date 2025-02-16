@@ -15,6 +15,7 @@ cd /var/www/wordpress
 if [ -f /wp-config.php ]; then
 	echo "Wordpress already installed"
 else 
+	# Wordpress set-up
 	wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_USER_PWD" \
     				 --dbhost=mariadb:3306 --dbprefix=wp_ --skip-check --allow-root --path='/var/www/wordpress'	
 	wp core install --url="$DOMAIN_NAME" --title="$TITLE" --admin_user="$ADMIN" --admin_password="$ADMIN_PWD" \
@@ -22,7 +23,18 @@ else
 	wp user create  "$USER" "$USER_EMAIL" --user_pass="$USER_PWD" --role=author \
 				   	--allow-root --path='/var/www/wordpress'	
 	# ensure any cached data is cleared to avoid conflicts
-	wp cache flush --allow-root --path='/var/www/wordpress'	
+	wp cache flush --allow-root --path='/var/www/wordpress'					
+	
+	# Redis set-up
+	# https://github.com/rhubarbgroup/redis-cache/#configuration
+	wp config set WP_CACHE_KEY_SALT "$DOMAIN_NAME" --allow-root	
+	wp config set WP_CACHE true --raw --allow-root
+	# wp config set WP_REDIS_PORT 6379 --raw --allow-root : default	
+	# wp config set WP_REDIS_CLIENT phpredis --allow-root : default	
+	wp config set WP_REDIS_HOST redis --allow-root
+	wp plugin install redis-cache --activate --allow-root
+	# wp plugin update --all --allow-root
+	wp redis enable --allow-root	
 fi
 # -e = exists ? (file or directory)
 # -f = file exists ?
@@ -36,6 +48,9 @@ fi
 if [ ! -d /run/php ]; then
     mkdir -p /run/php
 fi
+
+
+
 
 # launch php-fpm
 /usr/sbin/php-fpm7.4 -F

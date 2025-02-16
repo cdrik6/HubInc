@@ -48,6 +48,21 @@ services:
     - wordpress
     networks:
     - inception
+  redis:
+    container_name: redis
+    build: ./requirements/bonus/redis
+    image: redis
+    restart: on-failure
+    ports:
+    - "6379:6379"    
+    env_file:
+    - .env.tmp    
+    depends_on:
+    - wordpress
+    volumes:
+    - wordpress:/var/www/wordpress
+    networks:
+    - inception  
   
 volumes:
   mariadb:
