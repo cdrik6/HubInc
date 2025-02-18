@@ -62,16 +62,14 @@ services:
     volumes:
     - wordpress:/var/www/wordpress
     networks:
-    - inception  
+    - inception     
   adminer:
     container_name: adminer
     build: ./requirements/bonus/adminer
     image: adminer
     restart: on-failure    
-    # ports:
-    # - "80:8080"    
-    env_file:
-    - .env.tmp    
+    ports:
+    - "8080:8080"       
     depends_on:
     - mariadb    
     networks:
