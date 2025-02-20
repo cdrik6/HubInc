@@ -39,30 +39,32 @@ services:
     image: nginx
     restart: always
     ports:
-    - "443:443"
+      - "443:443"
     volumes:
-    - wordpress:/var/www/wordpress
+      - wordpress:/var/www/wordpress
     env_file:
-    - .env.tmp    
+      - .env.tmp    
     depends_on:
-    - wordpress
+      - wordpress
+      # - adminer
+      # - redis
     networks:
-    - inception
+      - inception
   redis:
     container_name: redis
     build: ./requirements/bonus/redis
     image: redis
     restart: on-failure
     ports:
-    - "6379:6379"    
+      - "6379:6379"    
     env_file:
-    - .env.tmp    
+      - .env.tmp    
     depends_on:
-    - wordpress
+      - wordpress
     volumes:
-    - wordpress:/var/www/wordpress
+      - wordpress:/var/www/wordpress
     networks:
-    - inception     
+      - inception     
   adminer:
     container_name: adminer
     build: ./requirements/bonus/adminer
@@ -74,6 +76,20 @@ services:
     - mariadb    
     networks:
     - inception
+  # ftp:
+  #   container_name: ftp
+  #   build: ./requirements/bonus/ftp
+  #   image: ftp
+  #   env_file:
+  #     - .env.tmp
+  #   restart: on-failure    
+  #   ports:
+  #     - "21:21"
+  #     - "21000-21010:21000-21010"
+  #   volumes:
+  #     - wordpress:/var/www/wordpress  
+  #   networks:
+  #     - inception  
 
 volumes:
   mariadb:
