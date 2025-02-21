@@ -2,7 +2,8 @@ FROM debian:bullseye
 
 RUN apt-get update \
  && apt-get upgrade -y \
- && apt-get install -y redis-server
+ && apt-get install -y redis-server \
+ && rm -rf /var/lib/apt/lists/*
 
 # specific settings	of Redis for caching in /etc/redis/redis.conf (big file so not by copy)
 # maxmemory 256mb -> tells Redis not to use more than 256MB of RAM

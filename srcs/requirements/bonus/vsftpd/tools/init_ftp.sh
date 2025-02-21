@@ -15,6 +15,10 @@ if [ ! -f "/etc/vsftpd/vsftpd.conf.bak" ]; then
     chown -R $FTP_USER:$FTP_USER /var/www/wordpress
 fi
 
+if [ ! -f "/var/run/vsftpd/empty" ]; then 
+    mkdir -p /var/run/vsftpd/empty
+fi
+
 /usr/sbin/vsftpd /etc/vsftpd.conf
 
 # Note
