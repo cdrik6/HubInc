@@ -40,6 +40,8 @@ fi
 # -f = file exists ?
 # -d = directory exists ?
 
+echo "<h1>404 - Page Not Found</h1>" > /var/www/wordpress/404.html
+
 if [ ! -e /var/www/wordpress/wp-config.php ]; then
 	echo "wp-config.php is missing"	
 fi
@@ -48,9 +50,6 @@ fi
 if [ ! -d /run/php ]; then
     mkdir -p /run/php
 fi
-
-
-
 
 # launch php-fpm
 /usr/sbin/php-fpm7.4 -F

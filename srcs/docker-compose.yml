@@ -42,12 +42,13 @@ services:
       - "443:443"
     volumes:
       - wordpress:/var/www/wordpress
+      - web:/var/www/web      
     env_file:
       - .env.tmp    
     depends_on:
       - wordpress
-      # - adminer
-      # - redis
+      - adminer
+      - static
     networks:
       - inception
   redis:
@@ -60,7 +61,8 @@ services:
     env_file:
       - .env.tmp    
     depends_on:
-      - wordpress
+      - wordpress      
+      # - vsftpd
     volumes:
       - wordpress:/var/www/wordpress
     networks:
@@ -87,7 +89,11 @@ services:
       - "21:21"  # FTP control
       - "21100-21110:21100-21110" # Passive ports for data transfer
     volumes:
-      - wordpress:/var/www/wordpress  
+      - wordpress:/var/www/wordpress
+      - web:/var/www/web
+    # depends_on:
+    #   - wordpress
+    #   - redis
     networks:
       - inception
   gftp:
@@ -103,11 +109,24 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - wordpress:/var/www/wordpress  
+      - web:/var/www/web     
     # network_mode: "host"  # Allows GUI access to the host's display  
     depends_on:
       - vsftpd
     networks:
-      - inception      
+      - inception
+  static:
+    container_name: static
+    build: ./requirements/bonus/static
+    image: static 
+    depends_on:
+      - wordpress
+    volumes:      
+      - web:/var/www/web
+    expose:
+      - "2000"
+    networks:
+      - inception          
 
 volumes:
   mariadb:
@@ -122,6 +141,12 @@ volumes:
       type: none
       o: bind
       device: /home/mangue/data/wordpress
+  web:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mangue/data/web    
 
 networks:
   inception:    

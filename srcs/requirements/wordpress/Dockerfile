@@ -8,7 +8,7 @@ RUN wget https://wordpress.org/latest.tar.gz -P /var/www \
  && cd /var/www \
  && tar -xzf latest.tar.gz \
  && rm latest.tar.gz  \
- &&	chown -R root:root /var/www/wordpress \
+#  &&	chown -R root:root /var/www/wordpress \
  && chown -R www-data:www-data /var/www/wordpress
 # ensures that all files and directories under /var/www/wordpress 
 # are owned by the root user and group

@@ -15,6 +15,8 @@ RUN echo "maxmemory 256mb" >> /etc/redis/redis.conf \
 #  && sed -i "s|# port 0|port 0|g" /etc/redis/redis.conf \
 #  && sed -i "s|# tls-port 6379|tls-port 6379|g" /etc/redis/redis.conf
 
+# RUN chown -R redis:redis /var/www/wordpress
+
 EXPOSE 6379
 # Expose port to the host
 
