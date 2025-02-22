@@ -42,7 +42,7 @@ services:
       - "443:443"
     volumes:
       - wordpress:/var/www/wordpress
-      - web:/var/www/web      
+      # - web:/var/www/web      
     env_file:
       - .env.tmp    
     depends_on:
@@ -90,7 +90,7 @@ services:
       - "21100-21110:21100-21110" # Passive ports for data transfer
     volumes:
       - wordpress:/var/www/wordpress
-      - web:/var/www/web
+      # - web:/var/www/web
     # depends_on:
     #   - wordpress
     #   - redis
@@ -109,7 +109,7 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - wordpress:/var/www/wordpress  
-      - web:/var/www/web     
+      # - web:/var/www/web     
     # network_mode: "host"  # Allows GUI access to the host's display  
     depends_on:
       - vsftpd
@@ -122,7 +122,7 @@ services:
     depends_on:
       - wordpress
     volumes:      
-      - web:/var/www/web
+      - wordpress:/var/www/wordpress
     expose:
       - "2000"
     networks:
@@ -141,12 +141,12 @@ volumes:
       type: none
       o: bind
       device: /home/mangue/data/wordpress
-  web:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/mangue/data/web    
+  # web:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     o: bind
+  #     device: /home/mangue/data/web    
 
 networks:
   inception:    

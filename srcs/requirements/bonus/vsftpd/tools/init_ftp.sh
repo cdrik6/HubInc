@@ -16,8 +16,8 @@ if [ ! -f "/etc/vsftpd/vsftpd.conf.bak" ]; then
     chown nobody:nogroup /var/www/wordpress
     chmod a-w /var/www/wordpress
 
-    mkdir -p /var/www/web    
-    chown nobody:nogroup /var/www/web
+    # mkdir -p /var/www/web    
+    # chown nobody:nogroup /var/www/web
 fi
 
 if [ ! -f "/var/run/vsftpd/empty" ]; then 
