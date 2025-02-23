@@ -3,6 +3,8 @@ FROM debian:bullseye
 RUN apt-get update \
  && apt-get upgrade -y \
  && apt-get install -y gftp x11-apps \
+    libcanberra-gtk-module \
+    libcanberra-gtk3-module \
  && rm -rf /var/lib/apt/lists/*
  
 ENV DISPLAY=:0 

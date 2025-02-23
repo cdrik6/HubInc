@@ -12,12 +12,10 @@ if [ ! -f "/etc/vsftpd/vsftpd.conf.bak" ]; then
 
     # FTP directory with FTP_USER as the owner of wordpress folders
     mkdir -p /var/www/wordpress
-    # chown -R $FTP_USER:$FTP_USER /var/www/wordpress
-    chown nobody:nogroup /var/www/wordpress
-    chmod a-w /var/www/wordpress
-
-    # mkdir -p /var/www/web    
-    # chown nobody:nogroup /var/www/web
+    chown -R $FTP_USER:$FTP_USER /var/www/wordpress
+    # chown nobody:nogroup /var/www/wordpress
+    # chmod a-w /var/www/wordpress
+    
 fi
 
 if [ ! -f "/var/run/vsftpd/empty" ]; then 

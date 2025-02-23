@@ -1,8 +1,13 @@
 FROM debian:bullseye
 
-COPY tools/init_static.sh /init_static.sh
+RUN apt-get update \ 
+    && apt-get install -y node.js npm \
+    && rm -rf /var/lib/apt/lists/*
 
-# RUN bash ./init_static.sh
+COPY /tools /home/app
 
-ENTRYPOINT ["bash", "init_static.sh"]
-# CMD ["tail", "-f", "/dev/null"]
+WORKDIR /home/app
+
+RUN npm init -y && npm install -y express
+
+CMD ["node", "server.js"]

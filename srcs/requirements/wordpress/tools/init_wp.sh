@@ -35,12 +35,15 @@ else
 	wp plugin install redis-cache --activate --allow-root
 	# wp plugin update --all --allow-root
 	wp redis enable --allow-root	
+
+	echo "<h1>404 - Page Not Found</h1>" > /var/www/wordpress/404.html
+	chown -R www-data:www-data /var/www/wordpress
 fi
 # -e = exists ? (file or directory)
 # -f = file exists ?
 # -d = directory exists ?
 
-echo "<h1>404 - Page Not Found</h1>" > /var/www/wordpress/404.html
+
 
 if [ ! -e /var/www/wordpress/wp-config.php ]; then
 	echo "wp-config.php is missing"	

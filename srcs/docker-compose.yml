@@ -11,13 +11,7 @@ services:
     volumes:
       - mariadb:/var/lib/mysql    
     networks:
-      - inception        
-    # healthcheck:      
-    #   test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-    #   interval: 10s
-    #   retries: 5
-    #   start_period: 30s
-    #   timeout: 10s          
+      - inception
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress      
@@ -41,8 +35,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - wordpress:/var/www/wordpress
-      # - web:/var/www/web      
+      - wordpress:/var/www/wordpress      
     env_file:
       - .env.tmp    
     depends_on:
@@ -89,11 +82,9 @@ services:
       - "21:21"  # FTP control
       - "21100-21110:21100-21110" # Passive ports for data transfer
     volumes:
-      - wordpress:/var/www/wordpress
-      # - web:/var/www/web
-    # depends_on:
-    #   - wordpress
-    #   - redis
+      - wordpress:/var/www/wordpress      
+    depends_on:
+      - wordpress    
     networks:
       - inception
   gftp:
@@ -108,9 +99,7 @@ services:
       - "1000"      
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - wordpress:/var/www/wordpress  
-      # - web:/var/www/web     
-    # network_mode: "host"  # Allows GUI access to the host's display  
+      # - wordpress:/var/www/wordpress            
     depends_on:
       - vsftpd
     networks:
@@ -119,10 +108,10 @@ services:
     container_name: static
     build: ./requirements/bonus/static
     image: static 
-    depends_on:
-      - wordpress
-    volumes:      
-      - wordpress:/var/www/wordpress
+    # depends_on:
+    #   - wordpress
+    # volumes:      
+    #   - wordpress:/var/www/wordpress
     expose:
       - "2000"
     networks:
@@ -140,13 +129,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/mangue/data/wordpress
-  # web:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     o: bind
-  #     device: /home/mangue/data/web    
+      device: /home/mangue/data/wordpress  
 
 networks:
   inception:    
