@@ -42,6 +42,7 @@ services:
       - wordpress
       - adminer
       - static
+      - vsftpd
     networks:
       - inception
   redis:
@@ -91,6 +92,7 @@ services:
     container_name: gftp
     build: ./requirements/bonus/gftp
     image: gftp
+    restart: on-failure
     environment:
       - DISPLAY=${DISPLAY}
     env_file:
@@ -102,12 +104,14 @@ services:
       # - wordpress:/var/www/wordpress            
     depends_on:
       - vsftpd
+      # - wordpress      
     networks:
       - inception
   static:
     container_name: static
     build: ./requirements/bonus/static
-    image: static 
+    image: static
+    restart: on-failure 
     # depends_on:
     #   - wordpress
     # volumes:      

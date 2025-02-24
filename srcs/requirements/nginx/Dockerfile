@@ -22,7 +22,6 @@ RUN mkdir -p /var/run/nginx
 # /var/run/nginx is often used by NGINX to store runtime files, such as the process ID file (nginx.pid).
 # If this directory doesn’t exist when NGINX starts, it may fail or log an error.
 
-# COPY /etc/nginx/conf.d conf/temp
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 # Copies my NGINX configuration file (nginx.conf)
 # FROM conf/ (the directory on your local machine)
@@ -31,17 +30,17 @@ COPY conf/nginx.conf /etc/nginx/nginx.conf
 # /etc/nginx/conf.d --> directory for site-specific files, included by nginx.conf
 # /etc/nginx/nginx.conf --> main/global configuration file, affects the entire Nginx server
 
-# RUN chmod 755 /var/www/html \
-#  && chown -R www-data:www-data /var/www/html
 RUN mkdir -p /var/www/wordpress \
- && chmod 755 /var/www/wordpress \
- && chown -R www-data:www-data /var/www/wordpress
+ && chown -R www-data:www-data /var/www/wordpress 
+#  && chmod 777 -R /var/www/wordpress
+# 755 sufficient if no ftp client but for bonus need the write permissions to manage files with gftp
+ 
 # chmod ensures that:
-# - Files in /var/www/html are readable by everyone (necessary for a public web server).
+# - Files in /var/www/wordpress are readable by everyone (necessary for a public web server).
 # - Only the owner (www-data) has write permissions for security.
 # chown ensures that:
 # - the web server (running as www-data) has proper access to read/write files it needs to serve.
-# (www-data owner of all files in /var/www/html)
+# (www-data owner of all files in /var/www/wordpress)
 # These commands are foundational for setting up a secure and functional web server
 # environment in a containerized setup.
 
@@ -51,7 +50,8 @@ RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/defau
 
 EXPOSE 443
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["bash", "-c", "echo 'nginx configured' && nginx -g 'daemon off;'"]
+# CMD ["nginx", "-g", "daemon off;"]
 # -g is used to pass the daemon off; directive to Nginx
 # In Docker, the container must have a single foreground process to keep it running.
 # If the main process (in this case, Nginx) daemonizes and runs in the background,

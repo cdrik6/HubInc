@@ -6,12 +6,12 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/02/09 00:19:17 by caguillo         ###   ########.fr        #
+#    Updated: 2025/02/23 23:47:36 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS = ./srcs/docker-compose.yml
-DC = docker-compose -f
+DC = docker compose -f
 
 all:
 	mkdir -p /home/caguillo/data
@@ -35,7 +35,7 @@ down: stop
 # stop and delete services
 
 clean: stop 
-	sudo $(DC) $(SRCS) down --rmi all
+	sudo $(DC) $(SRCS) down --rmi all -v
 # -v deletes volumes
 # stop and delete services, remove containers, images, network (volumes if -v)
 

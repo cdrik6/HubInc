@@ -6,7 +6,11 @@ RUN apt-get update \
     libcanberra-gtk-module \
     libcanberra-gtk3-module \
  && rm -rf /var/lib/apt/lists/*
- 
+
+#  RUN mkdir -p /var/www/wordpress \
+#   && chown -R www-data:www-data /var/www/wordpress \
+#   && chmod 777 -R /var/www/wordpress
+
 ENV DISPLAY=:0 
 
 ENTRYPOINT ["gftp"]
