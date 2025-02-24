@@ -15,7 +15,7 @@ RUN echo "maxmemory 256mb" >> /etc/redis/redis.conf \
 #  && sed -i "s|# port 0|port 0|g" /etc/redis/redis.conf \
 #  && sed -i "s|# tls-port 6379|tls-port 6379|g" /etc/redis/redis.conf
 
-EXPOSE 6379
-# Expose port to the host
+# EXPOSE 6379
+# # Expose port to the host
 
 CMD	["redis-server", "--protected-mode no"]

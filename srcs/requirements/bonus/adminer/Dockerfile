@@ -10,7 +10,7 @@ RUN wget -q "http://www.adminer.org/latest.php" -O /var/www/html/index.php \
  && chown -R www-data:www-data /var/www/html \
  && chmod 755 /var/www/html/index.php
 
-EXPOSE 8080
+# EXPOSE 8080
 
 ENTRYPOINT ["php", "-S", "0.0.0.0:8080", "-t", "/var/www/html/"]
 # COPY tools/init_ad.sh /init_ad.sh

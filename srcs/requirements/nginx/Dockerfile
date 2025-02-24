@@ -46,7 +46,6 @@ RUN mkdir -p /var/www/wordpress \
 
 COPY conf/default.conf /etc/nginx/sites-available/default.conf
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
-# sudo ln -s /etc/nginx/sites-available/your.conf /etc/nginx/sites-enabled/
 
 EXPOSE 443
 

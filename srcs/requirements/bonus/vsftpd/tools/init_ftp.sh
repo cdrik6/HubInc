@@ -13,13 +13,12 @@ if [ ! -f "/etc/vsftpd/vsftpd.conf.bak" ]; then
 
     # FTP directory with FTP_USER as the owner of wordpress folders
     mkdir -p /var/www/wordpress
-    chown -R $FTP_USER:$FTP_USER /var/www/wordpress
-    # chmod 777 -R /var/www/wordpress # --> here to authorised gFTP    
-
+    chown -R $FTP_USER:$FTP_USER /var/www/wordpress #--> no
     # chown -R www-data:www-data /var/www/wordpress --> yes
     # www-data (the web server user) can read and write.
     # FTP users in the www-data group can also manage files.
 
+    chmod 777 -R /var/www/wordpress # --> here to authorised gFTP
 fi
 
 if [ ! -f "/var/run/vsftpd/empty" ]; then 

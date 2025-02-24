@@ -6,7 +6,7 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/02/23 23:47:36 by caguillo         ###   ########.fr        #
+#    Updated: 2025/02/24 21:38:16 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ all:
 	mkdir -p /home/caguillo/data/wordpress
 	mkdir -p /home/caguillo/data/mariadb
 	docker ps -q | grep . || sudo $(DC) $(SRCS) up --build -d
-	
+
 re: fclean all
 
 logs:

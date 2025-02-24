@@ -21,8 +21,8 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 COPY conf/php.conf /etc/php/7.4/fpm/pool.d/www.conf
 COPY tools/init_wp.sh /init_wp.sh
 
-EXPOSE 9000 
-# 9000 is the default port for PHP-FPM
+# EXPOSE 9000 
+# # 9000 is the default port for PHP-FPM
 
 ENTRYPOINT  ["bash", "init_wp.sh"]
 # for debbug: CMD ["tail", "-f", "/dev/null"]

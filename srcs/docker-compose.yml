@@ -4,10 +4,10 @@ services:
     build: ./requirements/mariadb
     image: mariadb
     restart: unless-stopped
-    expose:
-      - "3306"
+    # expose:
+    #   - "3306"
     env_file:
-      - .env.tmp  
+      - .env  
     volumes:
       - mariadb:/var/lib/mysql    
     networks:
@@ -17,12 +17,12 @@ services:
     build: ./requirements/wordpress      
     image: wordpress
     restart: on-failure
-    expose:
-      - "9000"
+    # expose:
+    #   - "9000"
     volumes:
       - wordpress:/var/www/wordpress
     env_file:
-      - .env.tmp
+      - .env
     depends_on:
       - mariadb
     networks:
@@ -37,7 +37,7 @@ services:
     volumes:
       - wordpress:/var/www/wordpress      
     env_file:
-      - .env.tmp    
+      - .env    
     depends_on:
       - wordpress
       - adminer
@@ -50,10 +50,10 @@ services:
     build: ./requirements/bonus/redis
     image: redis
     restart: on-failure
-    ports:
-      - "6379:6379"    
+    # ports:
+    #   - "6379:6379"    
     env_file:
-      - .env.tmp    
+      - .env    
     depends_on:
       - wordpress      
       # - vsftpd
@@ -66,8 +66,8 @@ services:
     build: ./requirements/bonus/adminer
     image: adminer
     restart: on-failure    
-    ports:
-    - "8080:8080"       
+    # ports:
+    # - "8080:8080"       
     depends_on:
     - mariadb    
     networks:
@@ -77,7 +77,7 @@ services:
     build: ./requirements/bonus/vsftpd
     image: vsftpd
     env_file:
-      - .env.tmp
+      - .env
     restart: on-failure    
     ports:
       - "21:21"  # FTP control
@@ -96,9 +96,9 @@ services:
     environment:
       - DISPLAY=${DISPLAY}
     env_file:
-      - .env.tmp
-    expose:
-      - "1000"      
+      - .env
+    # expose:
+    #   - "1000"      
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       # - wordpress:/var/www/wordpress            
@@ -111,13 +111,9 @@ services:
     container_name: static
     build: ./requirements/bonus/static
     image: static
-    restart: on-failure 
-    # depends_on:
-    #   - wordpress
-    # volumes:      
-    #   - wordpress:/var/www/wordpress
-    expose:
-      - "2000"
+    restart: on-failure     
+    # expose:
+    #   - "2000"
     networks:
       - inception          
 

@@ -18,8 +18,8 @@ RUN	mkdir -p /var/run/mysqld \
  && chown -R mysql:mysql /tmp
 #&& chown -R mysql:mysql /etc/mysql	
 
-EXPOSE 3306
-# Expose port to the host
+# EXPOSE 3306
+# # Expose port to the host
 
 USER mysql
 
