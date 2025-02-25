@@ -6,42 +6,65 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/02/24 21:38:16 by caguillo         ###   ########.fr        #
+#    Updated: 2025/02/25 01:02:45 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS = ./srcs/docker-compose.yml
-DC = docker compose -f
+SRCS_PATH = ./srcs
+YML = $(SRCS_PATH)/docker-compose.yml
+DC := $(shell \
+    if command -v docker compose > /dev/null 2>&1; then \
+        echo "docker compose -f"; \
+    else \
+        echo "docker-compose -f"; \
+    fi)
 
-all:
+check_env:
+	if [ ! -f $(SRCS_PATH)/.env ]; then \
+		echo ".env file is missing!"; \
+		exit 1; \
+	fi
+
+volumes:	
 	mkdir -p /home/caguillo/data
-	mkdir -p /home/caguillo/data/wordpress
 	mkdir -p /home/caguillo/data/mariadb
-	docker ps -q | grep . || sudo $(DC) $(SRCS) up --build -d
+	mkdir -p /home/caguillo/data/wordpress	
+	
+all:
+	check_env
+	volumes
+	docker ps -q | grep . || $(DC) $(YML) up --build -d
 
+all-d:
+	check_env
+	volumes
+	docker ps -q | grep . || $(DC) $(YML) up --build
+	
 re: fclean all
 
 logs:
-	sudo $(DC) $(SRCS) logs
+	$(DC) $(YML) logs -f
 	
 stop:
-	sudo $(DC) $(SRCS) stop
+	$(DC) $(YML) stop
 
 restart:
-	sudo $(DC) $(SRCS) start
+	$(DC) $(YML) start
 
 down: stop
-	sudo $(DC) $(SRCS) down
+	$(DC) $(YML) down
 # stop and delete services
 
 clean: stop 
-	sudo $(DC) $(SRCS) down --rmi all -v
+	$(DC) $(YML) down --rmi all -v --remove-orphans
 # -v deletes volumes
 # stop and delete services, remove containers, images, network (volumes if -v)
 
 fclean: clean
-	sudo docker system prune -af --volumes
-	sudo rm -rf /home/caguillo/data	
+	docker system prune -af --volumes
+	sudo rm -rf /home/caguillo/data
+
+.PHONY: all all-d up down re logs stop restart clean fclean
 	
 # sudo rm -rf /home/caguillo/data/wordpress_data
 # sudo rm -rf /home/caguillo/data/mariadb_data	
