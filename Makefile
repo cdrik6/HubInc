@@ -6,7 +6,7 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/02/25 01:13:31 by caguillo         ###   ########.fr        #
+#    Updated: 2025/02/25 01:16:17 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,9 @@ all:
 	docker ps -q | grep . || $(DC) $(YML) up --build -d
 
 all-d:
-	check_env
-	volumes
+	mkdir -p /home/caguillo/data
+	mkdir -p /home/caguillo/data/mariadb
+	mkdir -p /home/caguillo/data/wordpress
 	docker ps -q | grep . || $(DC) $(YML) up --build
 	
 re: fclean all
