@@ -6,7 +6,7 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/02/25 01:02:45 by caguillo         ###   ########.fr        #
+#    Updated: 2025/02/25 01:13:31 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,16 +19,6 @@ DC := $(shell \
         echo "docker-compose -f"; \
     fi)
 
-check_env:
-	if [ ! -f $(SRCS_PATH)/.env ]; then \
-		echo ".env file is missing!"; \
-		exit 1; \
-	fi
-
-volumes:	
-	mkdir -p /home/caguillo/data
-	mkdir -p /home/caguillo/data/mariadb
-	mkdir -p /home/caguillo/data/wordpress	
 	
 all:
 	check_env
@@ -63,6 +53,17 @@ clean: stop
 fclean: clean
 	docker system prune -af --volumes
 	sudo rm -rf /home/caguillo/data
+
+check_env:
+	if [ ! -f $(SRCS_PATH)/.env ]; then \
+		echo ".env file is missing!"; \
+		exit 1; \
+	fi
+
+volumes:	
+	mkdir -p /home/caguillo/data
+	mkdir -p /home/caguillo/data/mariadb
+	mkdir -p /home/caguillo/data/wordpress		
 
 .PHONY: all all-d up down re logs stop restart clean fclean
 	
