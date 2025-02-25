@@ -6,7 +6,7 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/02/25 01:26:31 by caguillo         ###   ########.fr        #
+#    Updated: 2025/02/25 01:45:12 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,6 @@ DC := $(shell \
 	
 all: check_env volumes
 	docker ps -q | grep . || $(DC) $(YML) up --build -d
-
-all-d:
-	mkdir -p /home/caguillo/data
-	mkdir -p /home/caguillo/data/mariadb
-	mkdir -p /home/caguillo/data/wordpress
-	docker ps -q | grep . || $(DC) $(YML) up --build
 	
 re: fclean all
 
@@ -52,7 +46,7 @@ fclean: clean
 	sudo rm -rf /home/caguillo/data
 
 check_env:
-	if [ ! -f $(SRCS_PATH)/.env ]; then \
+	@if [ ! -f $(SRCS_PATH)/.env ]; then \
 		echo ".env file is missing!"; \
 		exit 1; \
 	fi
@@ -60,9 +54,10 @@ check_env:
 volumes:	
 	mkdir -p /home/caguillo/data
 	mkdir -p /home/caguillo/data/mariadb
-	mkdir -p /home/caguillo/data/wordpress		
+	mkdir -p /home/caguillo/data/wordpress
+	sudo chown -R $(USER) /home/caguillo/data
 
-.PHONY: all all-d up down re logs stop restart clean fclean
+.PHONY: all up down re logs stop restart clean fclean
 	
 # sudo rm -rf /home/caguillo/data/wordpress_data
 # sudo rm -rf /home/caguillo/data/mariadb_data	
