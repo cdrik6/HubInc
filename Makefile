@@ -6,7 +6,7 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/20 21:09:21 by caguillo          #+#    #+#              #
-#    Updated: 2025/02/25 01:16:17 by caguillo         ###   ########.fr        #
+#    Updated: 2025/02/25 01:26:31 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,8 @@ DC := $(shell \
     else \
         echo "docker-compose -f"; \
     fi)
-
 	
-all:
-	check_env
-	volumes
+all: check_env volumes
 	docker ps -q | grep . || $(DC) $(YML) up --build -d
 
 all-d:
@@ -34,7 +31,7 @@ all-d:
 re: fclean all
 
 logs:
-	$(DC) $(YML) logs -f
+	$(DC) $(YML) logs
 	
 stop:
 	$(DC) $(YML) stop
@@ -44,7 +41,6 @@ restart:
 
 down: stop
 	$(DC) $(YML) down
-# stop and delete services
 
 clean: stop 
 	$(DC) $(YML) down --rmi all -v --remove-orphans
